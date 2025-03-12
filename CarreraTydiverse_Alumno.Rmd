@@ -172,6 +172,8 @@ necesario**
 4.  Elige únicamente las variables `ip_id, package, country`
 
 ```{r}
+# Seleccionamos solo las columnas ip_id, package y country
+cran %>% select(ip_id, package, country)
 
 ```
 
