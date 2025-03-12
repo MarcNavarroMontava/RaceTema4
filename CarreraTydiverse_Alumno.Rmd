@@ -297,6 +297,8 @@ cran3 <- cran %>% select(ip_id, package, size)
     tamaño de la descarga expresado en Mbytes ($1Mbyte=2^{20}$ bytes).
 
 ```{r}
+# Creamos una nueva variable 'size_mb' en cran3, convirtiendo 'size' de bytes a Mbytes
+cran3 <- cran3 %>% mutate(size_mb = size / 2^20)
 
 
 ```
@@ -306,6 +308,8 @@ cran3 <- cran %>% select(ip_id, package, size)
     expresado en Gbytes.
 
 ```{r}
+# Creamos una nueva variable 'size_gb' en cran3, convirtiendo 'size' de bytes a Gbytes
+cran3 <- cran3 %>% mutate(size_gb = size / (2^10 * 2^20))
 
 ```
 
@@ -315,6 +319,8 @@ cran3 <- cran %>% select(ip_id, package, size)
     valor correcto.
 
 ```{r}
+# Creamos una nueva variable 'correct_size' ajustando el tamaño en 1000 bytes
+cran3 <- cran3 %>% mutate(correct_size = size + 1000)
 
 ```
 
@@ -323,6 +329,8 @@ cran3 <- cran %>% select(ip_id, package, size)
     `avg_bytes`
 
 ```{r}
+# Calculamos el valor medio del tamaño de las descargas y lo almacenamos en avg_bytes
+avg_bytes <- cran %>% summarise(avg_bytes = mean(size, na.rm = TRUE))
 
 ```
 
