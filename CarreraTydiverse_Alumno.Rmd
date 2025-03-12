@@ -484,9 +484,6 @@ hacerlo usando una tubería sin emplear ninguna variable auxiliar.
 
 ```{r}
 
-
-
-
 ```
 
 **EXTRA** Tal como se indica en el ejercicio, el significado de los
@@ -514,18 +511,6 @@ de las descargas almacenados en `cran`. Procede de la siguiente forma:
 
 ```{r}
 
-
-
-
-
-
-
-
-
-
-
-
-
 ```
 
 # tidyr.
@@ -542,8 +527,20 @@ son las variables ?. Transfórmalo en un conjunto `tidy` con las
 variables, `grade, sex y count`
 
 ```{r}
+# Cargar las librerías necesarias
+library(tidyr)
+library(dplyr)
+library(readr)
 
+# Cargar el fichero de datos
+load('./data/datostidyr.Rdata')
 
+# Transformamos el data frame 'students' en un conjunto tidy
+students_tidy <- students %>%
+  gather(key = "sex", value = "count", male, female)
+
+# Mostramos el resultado
+students_tidy
 
 ```
 
@@ -554,8 +551,13 @@ variables, `grade, sex y count`
     nueva variable `class`)
 
 ```{r}
+# Transformamos 'students2' en un conjunto tidy
+students2_tidy <- students2 %>%
+  gather(key = "sex_class", value = "count", male_1, female_1, male_2, female_2) %>%
+  separate(sex_class, into = c("sex", "class"), sep = "_")
 
-
+# Ver el resultado
+students2_tidy
 
 
 ```
@@ -567,9 +569,13 @@ variables, `grade, sex y count`
     `na.rm=TRUE` en las opciones de `gather`
 
 ```{r}
+# Transformamos 'students3' en un conjunto tidy
+students3_tidy <- students3 %>%
+  gather(key = "class", value = "score", class1, class2, class3, class4, class5) %>%
+  mutate(class = gsub("class", "", class)) # Extraemos el número de la clase
 
-
-
+# Ver el resultado
+students3_tidy
 
 ```
 
@@ -581,11 +587,12 @@ variables, `grade, sex y count`
     y utiliza el resultado para realizar la tarea solicitada.
 
 ```{r}
+# Convertimos 'class1', 'class2', etc., a números
+students4 <- students4 %>%
+  mutate(class = parse_number(names(students4)[grep("class", names(students4))]))
 
-
-
-
-
+# Ver el resultado
+students4
 
 ```
 
@@ -597,13 +604,16 @@ variables, `grade, sex y count`
     tablas(`id`), que llamarás `gradebook`.
 
 ```{r}
+# Separar 'students4' en dos tablas
+student_info <- students4 %>%
+  select(id, name, class)
 
+gradebook <- students4 %>%
+  select(id, midterm, final)
 
-
-
-
-
-
+# Mostramos las dos tablas
+student_info
+gradebook
 
 
 ```
@@ -617,11 +627,13 @@ variables, `grade, sex y count`
     puedes usar la función `bind_rows`.
 
 ```{r}
-
-
+# Añadimos la columna 'status' y unimos los datos
+failed %>%
+  mutate(status = "failed") %>%
+  bind_rows(passed %>%
+              mutate(status = "passed"))
 
 ```
-
 # Pongamos todo en común.
 
 35. El SAT es un examen popular de preparación para la universidad en
