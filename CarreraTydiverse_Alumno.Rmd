@@ -180,6 +180,8 @@ cran %>% select(ip_id, package, country)
 5.  Elige todas las variables entre `r_arch y country`
 
 ```{r}
+# Seleccionamos todas las columnas entre r_arch y country
+cran %>% select(r_arch:country)
 
 ```
 
@@ -188,8 +190,8 @@ cran %>% select(ip_id, package, country)
     `date y size`
 
 ```{r}
-
-
+# Seleccionamos todas las columnas excepto las que están entre date y size
+cran %>% select(-date:-size)
 
 
 ```
@@ -198,6 +200,9 @@ cran %>% select(ip_id, package, country)
     `plotly`, desde un sistema que ejecuta la versión de R 3.5.1
 
 ```{r}
+# Filtramos los registros donde se descargó el paquete 'plotly' y la versión de R es '3.5.1'
+cran %>% filter(package == "plotly" & r_version == "3.5.1")
+
 
 ```
 
@@ -205,6 +210,8 @@ cran %>% select(ip_id, package, country)
     de R superiores a la 3.4.0
 
 ```{r}
+# Filtramos las descargas realizadas desde España (ES) con versiones de R superiores a 3.4.0
+cran %>% filter(country == "ES" & r_version > "3.4.0")
 
 ```
 
