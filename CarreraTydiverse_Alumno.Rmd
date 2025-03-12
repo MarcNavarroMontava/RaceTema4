@@ -219,7 +219,8 @@ cran %>% filter(country == "ES" & r_version > "3.4.0")
     (PT).
 
 ```{r}
-
+# Filtramos las descargas realizadas desde España (ES) o Portugal (PT)
+cran %>% filter(country %in% c("ES", "PT"))
 
 
 ```
@@ -228,6 +229,8 @@ cran %>% filter(country == "ES" & r_version > "3.4.0")
     un sistema operativo `linux-gnu`.
 
 ```{r}
+# Filtramos las descargas con tamaño superior a 100500 bytes desde un sistema operativo 'linux-gnu'
+cran %>% filter(size > 100500 & system == "linux-gnu")
 
 ```
 
@@ -235,12 +238,16 @@ cran %>% filter(country == "ES" & r_version > "3.4.0")
     no está vacía.
 
 ```{r}
+# Filtramos las descargas donde la versión del sistema operativo no está vacía
+cran %>% filter(!is.na(version))
 
 ```
 
 10. Almacena en `cran2` todas las columnas entre `size` y `ip_id`.
 
 ```{r}
+# Almacenamos en cran2 todas las columnas entre 'size' y 'ip_id'
+cran2 <- cran %>% select(size:ip_id)
 
 ```
 
