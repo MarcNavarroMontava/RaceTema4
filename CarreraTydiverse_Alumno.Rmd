@@ -343,7 +343,8 @@ avg_bytes <- cran %>% summarise(avg_bytes = mean(size, na.rm = TRUE))
     con la función `ungroup`.
 
 ```{r}
-
+# Creamos un agrupamiento por 'package' en cran y lo almacenamos en 'by_package'
+by_package <- cran %>% group_by(package)
 
 ```
 
@@ -352,6 +353,9 @@ avg_bytes <- cran %>% summarise(avg_bytes = mean(size, na.rm = TRUE))
     agrupamiento en el resultado.
 
 ```{r}
+# Calculamos el valor medio de 'size' por cada 'package' y mostramos el resultado
+by_package %>% summarise(mean_size = mean(size, na.rm = TRUE))
+
 
 ```
 
