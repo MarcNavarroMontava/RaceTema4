@@ -373,31 +373,15 @@ de la variable `size` y almacénalos en las variables
 sumario se almacenará en `pack_sum`.
 
 ```{r}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# Calculamos los valores requeridos y los almacenamos en 'pack_sum'
+pack_sum <- by_package %>%
+  summarise(
+    count = n(),
+    unique = n_distinct(ip_id),
+    countries = n_distinct(country),
+    avg_bytes = mean(size, na.rm = TRUE),
+    med_bytes = median(size, na.rm = TRUE)
+  )
 
 ```
 
@@ -410,11 +394,11 @@ sumario se almacenará en `pack_sum`.
     elemento `cran`, usando *pipes***.
 
 ```{r}
-
-
-
-
-
+# Calculamos el umbral del 1% de los paquetes más descargados
+top_counts <- cran %>%
+  group_by(package) %>%
+  summarise(count = n()) %>%
+  filter(count > quantile(count, probs = 0.99))  # Filtramos los paquetes con más descargas
 
 ```
 
@@ -423,13 +407,12 @@ sumario se almacenará en `pack_sum`.
     descargas (`count`) y se almacene el la variable `top_counts_sorted`
 
 ```{r}
-
-
-
-
-
-
-
+# Calculamos el umbral del 1% y ordenamos en orden descendente por el número de descargas
+top_counts_sorted <- cran %>%
+  group_by(package) %>%
+  summarise(count = n()) %>%
+  filter(count > quantile(count, probs = 0.99)) %>%
+  arrange(desc(count))  # Ordenamos por el número de descargas en orden descendente
 
 
 ```
@@ -443,13 +426,12 @@ sumario se almacenará en `pack_sum`.
     resultado en `top_unique_sorted`.
 
 ```{r}
-
-
-
-
-
-
-
+# Calculamos el número de ordenadores distintos y ordenamos por 'unique'
+top_unique_sorted <- cran %>%
+  group_by(package) %>%
+  summarise(unique = n_distinct(ip_id)) %>%
+  filter(unique > quantile(unique, probs = 0.99)) %>%
+  arrange(desc(unique))  # Ordenamos por el número de ordenadores distintos en orden descendente
 
 ```
 
@@ -458,8 +440,10 @@ sumario se almacenará en `pack_sum`.
     pantalla usando `print`. No es necesario almacenar.
 
 ```{r}
-
-
+# Seleccionamos las columnas ip_id, country, package y size y mostramos el resultado
+cran %>%
+  select(ip_id, country, package, size) %>%
+  print()
 
 ```
 
