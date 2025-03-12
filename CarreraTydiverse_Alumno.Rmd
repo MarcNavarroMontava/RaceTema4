@@ -648,11 +648,15 @@ failed %>%
     generar a posteriori.
 
 ```{r}
+# Imaginamos un conjunto sat
+# Vamos a convertir los datos a formato tidy.
 
+sat_tidy <- sat %>%
+  gather(key = "score_range", value = "count", -part, -sex) %>%  # Reorganizamos las columnas en formato largo
+  select(score_range, part, sex, count)  # Seleccionamos las columnas en el orden correcto
 
-
-
-
+# Ver el resultado
+sat_tidy
 
 ```
 
@@ -662,13 +666,17 @@ failed %>%
     variables `total y prop` respectivamente.
 
 ```{r}
+# Agrupamos los datos por 'part' y 'sex' y creamos las columnas 'total' y 'prop'
+sat_tidy_summary <- sat_tidy %>%
+  group_by(part, sex) %>%  # Agrupamos por 'part' y 'sex'
+  mutate(
+    total = sum(count),  # Calculamos el total de estudiantes por grupo
+    prop = count / total  # Calculamos la proporción dentro de cada grupo
+  ) %>%
+  ungroup()  # Desagrupamos después de realizar los cálculos
 
-
-
-
-
-
-
+# Ver el resultado
+sat_tidy_summary
 
 
 ```
@@ -678,17 +686,20 @@ failed %>%
     cada una de las franjas de calificación.
 
 ```{r}
+# Cargamos la librería ggplot2 para la visualización
+library(ggplot2)
 
-
-
-
-
-
-
-
-
-
-
+# Graficamos las diferencias entre hombres y mujeres en las diferentes pruebas para cada rango de puntuación
+ggplot(sat_tidy_summary, aes(x = score_range, y = prop, fill = sex)) +
+  geom_bar(stat = "identity", position = "dodge") +  # Barras separadas para hombres y mujeres
+  facet_wrap(~ part) +  # Facetas por parte del examen
+  labs(
+    title = "Proporción de estudiantes por sexo y rango de puntuación en el SAT",
+    x = "Rango de puntuación",
+    y = "Proporción de estudiantes",
+    fill = "Sexo"
+  ) +
+  theme_minimal()
 
 ```
 
