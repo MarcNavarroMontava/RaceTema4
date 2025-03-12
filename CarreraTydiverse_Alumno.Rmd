@@ -136,7 +136,18 @@ mydf %>% dim
     data frame original (usa `rm`)
 
 ```{r}
+# Cargar el fichero binario
+load(file = './data/2024-03-12.Rdata')
+dim(mydf)
+head(mydf)
 
+# lo transformamos en un tibble
+cran <- as_tibble(mydf)
+
+# Borramos el data frame original
+rm(mydf)
+
+cran %>% head
 
 ```
 
@@ -146,7 +157,10 @@ mydf %>% dim
     resultado.
 
 ```{r}
+cran
 
+# Usamos glimpse para obtener un resumen de la estructura de los datos
+cran %>% glimpse()
 
 ```
 
