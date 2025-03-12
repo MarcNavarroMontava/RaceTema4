@@ -451,8 +451,8 @@ cran %>%
     descarga en megabytes.
 
 ```{r}
-
-
+# Añadimos la columna 'size_mb' con el tamaño de cada descarga en Megabytes
+cran <- cran %>% mutate(size_mb = size / 2^20)
 
 ```
 
@@ -460,8 +460,8 @@ cran %>%
     Mbytes
 
 ```{r}
-
-
+# Seleccionamos las descargas cuyo tamaño es menor o igual que 0.5 Mbytes
+cran %>% filter(size_mb <= 0.5)
 
 ```
 
@@ -469,12 +469,10 @@ cran %>%
     descendente según el tamaño en Megabytes y muéstralo por pantalla.
 
 ```{r}
-
-
-
+# Seleccionamos las descargas cuyo tamaño es menor o igual que 0.5 Mbytes y las ordenamos en orden descendente
+cran %>% filter(size_mb <= 0.5) %>% arrange(desc(size_mb)) %>% print()
 
 ```
-
 **EXTRA**. Se desea mostar gráficamente aquellos países que suponen el
 mayor tráfico de información, ocasionado por el total de descargas
 acumuladas. Para facilitar la visualización céntrate en aquellos que
